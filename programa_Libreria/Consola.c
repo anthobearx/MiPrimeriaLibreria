@@ -11,21 +11,9 @@ JNIEXPORT void JNICALL Java_Consola_limpiarConsola(JNIEnv *env, jclass clase)
 	system("cls");
 }
 
-JNIEXPORT void JNICALL Java_Consola_cambiarTitulo(JNIEnv *env, jclass clase, jstring titulo)
-{
-	const jchar *str = (*env)->GetStringChars(env, titulo, NULL);
-    if (str != NULL) {
-        DWORD len = (*env)->GetStringLength(env, titulo);
-        int size = WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)str, len, NULL, 0, NULL, NULL);
-        char *buf = (char*)malloc(size + 1);
-        if (buf != NULL) {
-            WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)str, len, buf, size, NULL, NULL);
-            buf[size] = '\0';
-            SetConsoleTitle(buf);
-            free(buf);
-        }
-        (*env)->ReleaseStringChars(env, titulo, str);
-    }
+JNIEXPORT void JNICALL Java_Consola_cambiarTitulo(JNIEnv* env, jclass objeto, jstring titulo) {
+    const char* str = (*env)->GetStringUTFChars(env, titulo, 0);
+    SetConsoleTitle(str);
     system("pause");
 }
 
